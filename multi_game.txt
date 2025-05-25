@@ -1,0 +1,19 @@
+
+The main thread listens on the port and puts every new connection into a `waiting_clients` list. When two sockets are available, the main thread pops them, groups them as a pair, and starts ：
+    	threading.Thread(target=handle_game,
+          args=(Game(p1, p2),),
+          daemon=True).start()
+
+That thread runs the entire 26-round war protocol for its two players
+ and then closes both sockets. Only the main thread touches `waiting_clients`; each game thread uses its own local data, so no locks are required.  
+
+Result: the server can run many games in parallel without blocking.
+
+
+
+
+
+
+
+
+
